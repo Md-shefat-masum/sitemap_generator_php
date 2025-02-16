@@ -87,7 +87,7 @@ function updateSitemap($params)
     if (file_exists($sitemapFile)) {
 
         $sitemap = simplexml_load_file($sitemapFile);
-        $sitemapPath = asset("xmls/$xml_prefix-xml-$year-$month.xml");
+        $sitemapPath = env("APP_DOMAIN").("/xmls/$xml_prefix-xml-$year-$month.xml");
 
         // Check if the sitemap entry already exists
         $exists = false;
@@ -112,7 +112,7 @@ function updateSitemap($params)
             // Prepend the new sitemap entry
             $newSitemap = $sitemap->addChild('sitemap');
             $newSitemap->addChild('loc', $sitemapPath);
-            $newSitemap->addChild('lastmod', now()->format('Y-m-d'));
+            $newSitemap->addChild('lastmod', now()->toDateTimeString());
             $newSitemap->addChild('changefreq', 'weekly');
 
             $dom = dom_import_simplexml($sitemap)->ownerDocument;
@@ -142,7 +142,7 @@ function updateSitemap($params)
         $sitemap = new SimpleXMLElement("<?xml version=\"1.0\" encoding=\"UTF-8\"?><sitemapindex xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></sitemapindex>");
 
         $newSitemap = $sitemap->addChild('sitemap');
-        $newSitemap->addChild('loc', asset("xmls/$xml_prefix-xml-$year-$month.xml"));
+        $newSitemap->addChild('loc', env("APP_DOMAIN").("/xmls/$xml_prefix-xml-$year-$month.xml"));
         $newSitemap->addChild('lastmod', now()->toDateTimeString());
         $newSitemap->addChild('changefreq', 'weekly');
 
